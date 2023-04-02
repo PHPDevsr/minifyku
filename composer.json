@@ -1,0 +1,81 @@
+{
+    "name": "phpdevsr/minifyku",
+    "description": "Helper versioning and minification your assets in Codeigniter 4",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "codeigniter",
+        "codeigniter4",
+        "minifyku",
+        "minify css",
+        "minify js",
+        "minification"
+    ],
+    "authors": [
+        {
+            "name": "Denny Septian Panggabean",
+            "email": "xamidimura@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/PHPDevsr/minifyku",
+    "bin": [
+        "bin/rector"
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*",
+        "matthiasmullie/minify": "^1.3"
+    },
+    "require-dev": {
+        "codeigniter4/framework": "^4.3",
+        "codeigniter/coding-standard": "^1.7",
+        "nexusphp/tachycardia": "^1.4",
+        "php-coveralls/php-coveralls": "^2.5",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.6",
+        "rector/rector": "0.15.23"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "PHPDevsr\\Minifyku\\": "src"
+        },
+        "files": [
+            "src/Helpers/minifyku_helper.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "bash admin/setup.sh"
+        ],
+        "reci": [
+            "Composer\\Config::disableProcessTimeout",
+            "@cs",
+            "@analyze",
+            "@test"
+        ],
+        "analyze": [
+            "@phpstan",
+            "@rector"
+        ],
+        "cs-fix": "vendor/bin/php-cs-fixer fix --ansi --verbose --diff --using-cache=no",
+        "cs": "vendor/bin/php-cs-fixer fix --ansi --verbose --dry-run --diff --using-cache=no",
+        "rector": "vendor/bin/rector process --dry-run",
+        "phpstan": "bash -c \"XDEBUG_MODE=off phpstan analyse\"",
+        "test": "phpunit"
+    }
+}
