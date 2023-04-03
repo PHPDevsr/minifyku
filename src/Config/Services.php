@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PHPDevsr\Minifyku\Config;
 
 use CodeIgniter\Config\BaseService;
-use PHPDevsr\Minifyku\Config\Minifyku as MinifykuConfig;
 use PHPDevsr\Minifyku\Minifyku;
 
 class Services extends BaseService
@@ -14,9 +15,6 @@ class Services extends BaseService
             return self::getSharedInstance('minifyku');
         }
 
-        /** @var MinifykuConfig */
-        $config = config('Minifyku');
-
-        return new Minifyku($config);
+        return new Minifyku(config('Minifyku'));
     }
 }

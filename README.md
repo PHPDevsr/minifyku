@@ -1,134 +1,82 @@
-[![PHPUnit](https://github.com/PHPDevsr/reCaptcha-Codeigniter4/workflows/PHPUnit/badge.svg)](https://github.com/PHPDevsr/reCaptcha-Codeigniter4/actions/workflows/test-phpunit.yml)
-[![PHPStan](https://github.com/PHPDevsr/reCaptcha-Codeigniter4/actions/workflows/test-phpstan.yml/badge.svg)](https://github.com/PHPDevsr/reCaptcha-Codeigniter4/actions/workflows/test-phpstan.yml)
-[![Coverage Status](https://coveralls.io/repos/github/PHPDevsr/reCaptcha-Codeigniter4/badge.svg?branch=dev)](https://coveralls.io/github/PHPDevsr/reCaptcha-Codeigniter4?branch=dev)
-[![Downloads](https://poser.pugx.org/phpdevsr/recaptcha-codeigniter4/downloads)](https://packagist.org/packages/phpdevsr/recaptcha-codeigniter4)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/PHPDevsr/reCaptcha-Codeigniter4)](https://packagist.org/packages/phpdevsr/recaptcha-codeigniter4)
-[![GitHub stars](https://img.shields.io/github/stars/PHPDevsr/reCaptcha-Codeigniter4)](https://packagist.org/packages/phpdevsr/recaptcha-codeigniter4)
-[![GitHub license](https://img.shields.io/github/license/PHPDevsr/reCaptcha-Codeigniter4)](https://github.com/PHPDevsr/reCaptcha-Codeigniter4/blob/dev/LICENSE)
+[![PHPUnit](https://github.com/PHPDevsr/minifyku/workflows/PHPUnit/badge.svg)](https://github.com/PHPDevsr/minifyku/actions/workflows/test-phpunit.yml)
+[![PHPStan](https://github.com/PHPDevsr/minifyku/actions/workflows/test-phpstan.yml/badge.svg)](https://github.com/PHPDevsr/minifyku/actions/workflows/test-phpstan.yml)
+[![Coverage Status](https://coveralls.io/repos/github/PHPDevsr/minifyku/badge.svg?branch=dev)](https://coveralls.io/github/PHPDevsr/minifyku?branch=dev)
+[![Downloads](https://poser.pugx.org/phpdevsr/minifyku/downloads)](https://packagist.org/packages/phpdevsr/minifyku)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/PHPDevsr/minifyku)](https://packagist.org/packages/phpdevsr/minifyku)
+[![GitHub stars](https://img.shields.io/github/stars/PHPDevsr/minifyku)](https://packagist.org/packages/phpdevsr/minifyku)
+[![GitHub license](https://img.shields.io/github/license/PHPDevsr/minifyku)](https://github.com/PHPDevsr/minifyku/blob/dev/LICENSE)
 
-# reCAPTCHA Codeigniter 4
-Free to Use Library reCAPTCHA v2 for Codeigniter 4.
+# What is Minifyku?
 
-# What is reCAPTCHA?
-
-reCAPTCHA is a free service that protects your site from spam and abuse. It uses advanced risk analysis engine to tell humans and bots apart. With the new API, a significant number of your valid human users will pass the reCAPTCHA challenge without having to solve a CAPTCHA (See blog for more details). reCAPTCHA comes in the form of a widget that you can easily add to your blog, forum, registration form, etc.
-
-See [the details][1].
-
-# Sign up for an API key pair
-
-To use reCAPTCHA, you need to [sign up for an API key pair][4] for your site. The key pair consists of a site key and secret. The site key is used to display the widget on your site. The secret authorizes communication between your application backend and the reCAPTCHA server to verify the user's response. The secret needs to be kept safe for security purposes.
+Minifyku is helper versioning and minification your assets with Codeigniter 4, Can be automatically use ```base_url()```.
 
 # Installation
 
 install with composer
 ```bash
-$ composer require phpdevsr/recaptcha-codeigniter4
-$ php spark config:publish
+$ composer require phpdevsr/minifyku
 ```
+
+# Configuration
+
+```bash
+$ php spark minify:publish
+```
+
+This command will copy a config file to your app namespace. Then you can adjust it to your needs. By default, file will be present in ```app/Config/Minifyku.php```.
+
+```php
+public array $js = [
+    'all.min.js' => [
+        'bootstrap.js', 'jquery.js', 'main.js'
+    ],
+];
+
+public array $css = [
+    'all.min.css' => [
+        'bootstrap.css', 'font-awesome.css', 'main.css'
+    ],
+];
+```
+
+This configuration will be minify and combine file ```bootstrap.js```,```jquery.js```,```main.js``` to ```all.min.js```. Or minify and combine file ```bootstrap.css```,```font-awesome.css```,```main.css``` to ```all.min.css```.
 
 # Usage
 
-## Initialization
+Run command for minification your all assets:
 
-```php
-<?php
-
-require 'vendor/autoload.php';
-
-use Config\Recaptcha as RecaptchaConfig;
-use PHPDevsr\Recaptcha\Recaptcha;
-
-class Example
-{
-    /**
-     * Config Recaptcha
-     * 
-     * @var RecaptchaConfig $config
-     */
-    protected RecaptchaConfig $config;
-
-    /**
-     * Recaptcha
-     * 
-     * @var Recaptcha $recaptcha
-     */
-    protected Recaptcha $recaptcha;
-
-    public function __construct()
-    {
-        // Set Config
-        $this->config = new RecaptchaConfig();
-
-        $this->recaptcha = new Recaptcha($this->config);
-    }
-}
+```bash
+$ php spark minify:all
 ```
 
-## Render reCAPTCHA Widget
+This will prepare everything and will set up a versioning. Make sure to load a minifier helper in your controller, by calling:
 
-- Default
 ```php
-echo $this->recaptcha->getWidget();
-
-// Output
-<div class="g-recaptcha" data-sitekey="xxxxx" data-theme="light" data-type="image" data-size="normal" loading="lazy"></div>
+helper('minifyku');
 ```
 
-- Theme
-```php
-echo $this->recaptcha->getWidget(array('data-theme' => 'dark'));
+Now to generate a proper tag with desired file to load, you have to make a simple call in your code:
 
-// Output
-<div class="g-recaptcha" data-sitekey="xxxxx" data-theme="dark" data-type="image" data-size="normal" loading="lazy"></div>
+```php
+minifyku('all.min.js');
 ```
 
-- Type
-```php
-echo $this->recaptcha->getWidget(array('data-theme' => 'dark', 'data-type' => 'audio'));
+or
 
-// Output
-<div class="g-recaptcha" data-sitekey="xxxxx" data-theme="dark" data-type="audio" data-size="normal" loading="lazy"></div>
+```php
+minifyku('all.min.css');
 ```
 
-## Render Script Tag
+Helper will be produce:
 
-- Default
-```php
-echo $this->recaptcha->getScriptTag();
-
-// Output
-<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=onload&hl=en" defer></script>
+```html
+<script defer type="text/javascript" src="http://example.com/assets/js/all.min.js?v=bc3d0dc779f1a0b521b69ed3a2b85de8"></script>
 ```
 
-- Render
-```php
-echo $this->recaptcha->getScriptTag(array('render' => 'explicit'));
+or
 
-// Output
-<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=explicit&hl=en" defer></script>
-```
-
-- Language
-```php
-echo $this->recaptcha->getScriptTag(array('hl' => 'id'));
-
-// Output
-<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=onload
-&hl=id" defer></script>
-```
-
-## Verify Response
-
-Calls the reCAPTCHA siteverify API to verify whether the user passes `g-recaptcha-response` POST parameter.
-
-```php
-$captcha = $this->request->getPost('g-recaptcha-response');
-$response = $this->recaptcha->verifyResponse($captcha);
-
-if (isset($response['success']) and $response['success'] === true) {
-    echo "You got it!";
-}
+```html
+<link rel="stylesheet" href="http://localhost/assets/css/all.min.css?v=ec8d57dd8de143d7ef822a90fca20957">
 ```
 
 # License
@@ -139,13 +87,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 We does accept and encourage contributions from the community in any shape. It doesn't matter whether you can code, write documentation, or help find bugs, all contributions are welcome.
 
-<a href="https://github.com/PHPDevsr/reCaptcha-Codeigniter4/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PHPDevsr/reCaptcha-Codeigniter4" />
+<a href="https://github.com/PHPDevsr/minifyku/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PHPDevsr/minifyku" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
-
-[1]: https://www.google.com/recaptcha/intro/index.html
-[2]: http://www.codeigniter.com/
-[3]: https://developers.google.com/recaptcha/
-[4]: http://www.google.com/recaptcha/admin

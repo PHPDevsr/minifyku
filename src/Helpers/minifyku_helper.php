@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use PHPDevsr\Minifyku\Minifyku;
-
 if (! function_exists('minifyku')) {
     /**
      * Load Asset File
@@ -12,7 +10,6 @@ if (! function_exists('minifyku')) {
      */
     function minifyku(string $filename): string
     {
-        /** @var Minifyku Minifyku Class */
         $minifyku = service('minifyku');
 
         return $minifyku->load($filename);

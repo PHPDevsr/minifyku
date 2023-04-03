@@ -32,8 +32,16 @@ final class MinifykuTest extends CIUnitTestCase
         $this->config->dirMinJs   = SUPPORTPATH . 'assets/js';
         $this->config->dirMinCss  = SUPPORTPATH . 'assets/css';
         $this->config->dirVersion = SUPPORTPATH . 'assets';
-        $this->config->js         = ['all.min.js' => ['bootstrap.js', 'jquery.js', 'main.js']];
-        $this->config->css        = ['all.min.css' => ['bootstrap.css', 'font-awesome.css', 'main.css']];
+        $this->config->js         = [
+            'all.min.js' => [
+                'bootstrap.js', 'jquery.js', 'main.js',
+            ],
+        ];
+        $this->config->css = [
+            'all.min.css' => [
+                'bootstrap.css', 'font-awesome.css', 'main.css',
+            ],
+        ];
 
         if (file_exists($this->config->dirJS . '/new.js')) {
             unlink($this->config->dirJS . '/new.js');
@@ -42,11 +50,15 @@ final class MinifykuTest extends CIUnitTestCase
         if (file_exists($this->config->dirCSS . '/new.css')) {
             unlink($this->config->dirCSS . '/new.css');
         }
+
+        if (file_exists($this->config->dirVersion . '/versions.js')) {
+            unlink($this->config->dirVersion . '/versions.js');
+        }
     }
 
     public function testConfig()
     {
-        $this->assertTrue($this->config instanceof MinifykuConfig);
+        $this->assertInstanceOf(MinifykuConfig::class, $this->config);
 
         $this->assertSame('<script defer type="text/javascript" src="%s"></script>', $this->config->tagJs);
         $this->assertSame('<link rel="stylesheet" href="%s">', $this->config->tagCss);

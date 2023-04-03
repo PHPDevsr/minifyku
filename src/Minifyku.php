@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PHPDevsr\Minifyku;
 
 use MatthiasMullie\Minify\CSS as MinifyCSS;
@@ -29,8 +31,6 @@ class Minifyku
      */
     protected string $error = '';
 
-    // --------------------------------------------------------------------
-
     /**
      * Prepare config to use
      */
@@ -42,8 +42,6 @@ class Minifyku
         $this->minify_css = new MinifyCSS();
         $this->minify_js  = new MinifyJS();
     }
-
-    // --------------------------------------------------------------------
 
     /**
      * Load minified file
@@ -81,8 +79,6 @@ class Minifyku
         // prepare output
         return $this->prepareOutput($filenames, $dir, $tag);
     }
-
-    // --------------------------------------------------------------------
 
     /**
      * Deploy
@@ -171,8 +167,6 @@ class Minifyku
         return false;
     }
 
-    // --------------------------------------------------------------------
-
     /**
      * Determine URL address for asset
      *
@@ -195,8 +189,6 @@ class Minifyku
         return rtrim(base_url(), '/') . '/' . $dir;
     }
 
-    // --------------------------------------------------------------------
-
     /**
      * Prepare output to return a desired format
      *
@@ -217,8 +209,6 @@ class Minifyku
 
         return $output;
     }
-
-    // --------------------------------------------------------------------
 
     /**
      * Load version file
@@ -246,7 +236,6 @@ class Minifyku
     }
 
     /**
-     * --------------------------------------------------------------------
      * Set Version
      *
      * @param string $mode  Mode

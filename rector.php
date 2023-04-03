@@ -33,6 +33,7 @@ use Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector;
 use Rector\Php73\Rector\FuncCall\JsonThrowOnErrorRector;
 use Rector\Php73\Rector\FuncCall\StringifyStrNeedlesRector;
 use Rector\PHPUnit\Rector\Class_\AnnotationWithValueToAttributeRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\PSR4\Rector\FileWithoutNamespace\NormalizeNamespaceByPSR4ComposerAutoloadRector;
 use Rector\Set\ValueObject\LevelSetList;
@@ -42,6 +43,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
         SetList::DEAD_CODE,
         LevelSetList::UP_TO_PHP_74,
+        PHPUnitSetList::PHPUNIT_SPECIFIC_METHOD,
+        PHPUnitSetList::PHPUNIT_80,
     ]);
 
     $rectorConfig->parallel();
@@ -67,7 +70,7 @@ return static function (RectorConfig $rectorConfig): void {
     }
 
     // Set the target version for refactoring
-    $rectorConfig->phpVersion(PhpVersion::PHP_80);
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
     // Auto-import fully qualified class names
     $rectorConfig->importNames();
