@@ -48,7 +48,7 @@ class Minifyku
      *
      * @param string $filename File name
      *
-     * @return array|string
+     * @return string
      */
     public function load(string $filename)
     {
