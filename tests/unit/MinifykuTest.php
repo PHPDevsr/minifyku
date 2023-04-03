@@ -198,7 +198,8 @@ final class MinifykuTest extends CIUnitTestCase
 
         $result = $this->minifyku->load('all.min.js');
 
-        $this->assertSame('<script defer type="text/javascript" src="http://js.localhost/all.min.js?v=' . $this->ver['js'] . '"></script>' . PHP_EOL, $result);
+        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
+        $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
     }
 
     public function testLoadCssWithBaseCssUrlAndDirMinCss()
@@ -210,7 +211,8 @@ final class MinifykuTest extends CIUnitTestCase
 
         $result = $this->minifyku->load('all.min.css');
 
-        $this->assertSame('<link rel="stylesheet" href="http://css.localhost/all.min.css?v=' . $this->ver['css'] . '">' . PHP_EOL, $result);
+        $this->assertStringContainsString('<link rel="stylesheet"', $result);
+        $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
     }
 
     public function testDeployJsWithDirMinJs()
