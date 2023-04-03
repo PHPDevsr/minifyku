@@ -51,9 +51,11 @@ final class MinifykuTest extends CIUnitTestCase
             unlink($this->config->dirCSS . '/new.css');
         }
 
+        /*
         if (file_exists($this->config->dirVersion . '/versions.js')) {
             unlink($this->config->dirVersion . '/versions.js');
         }
+        */
     }
 
     public function testConfig()
