@@ -17,8 +17,8 @@ final class MinifykuTest extends CIUnitTestCase
     private MinifykuConfig $config;
     private Minifyku $minifyku;
     private array $ver = [
-        'js'  => 'bc3d0dc779f1a0b521b69ed3a2b85de8',
-        'css' => 'ec8d57dd8de143d7ef822a90fca20957',
+        'js'  => '0561b3110b4682b4c0a67ea9741be28d',
+        'css' => '621c512df406dc8d923a3fa756087d9d',
     ];
 
     protected function setUp(): void
@@ -127,6 +127,7 @@ final class MinifykuTest extends CIUnitTestCase
     {
         $this->minifyku = new Minifyku($this->config);
 
+        $this->minifyku->deploy('js');
         $result = $this->minifyku->load('all.min.js');
 
         $this->assertStringContainsString('<script defer type="text/javascript"', $result);
@@ -137,82 +138,11 @@ final class MinifykuTest extends CIUnitTestCase
     {
         $this->minifyku = new Minifyku($this->config);
 
+        $this->minifyku->deploy('css');
         $result = $this->minifyku->load('all.min.css');
 
         $this->assertStringContainsString('<link rel="stylesheet"', $result);
         $this->assertStringContainsString('assets/css/all.min.css?v=' . $this->ver['css'], $result);
-    }
-
-    public function testLoadJsWithDirMinJs()
-    {
-        $this->config->dirMinJs = SUPPORTPATH . 'public/js';
-        $this->minifyku         = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.js');
-
-        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
-        $this->assertStringContainsString('public/js/all.min.js?v=' . $this->ver['js'], $result);
-    }
-
-    public function testLoadCssWithDirMinCss()
-    {
-        $this->config->dirMinCss = SUPPORTPATH . 'public/css';
-        $this->minifyku          = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.css');
-
-        $this->assertStringContainsString('<link rel="stylesheet"', $result);
-        $this->assertStringContainsString('public/css/all.min.css?v=' . $this->ver['css'], $result);
-    }
-
-    public function testLoadJsWithBaseJsUrl()
-    {
-        $this->config->baseJSURL = 'http://js.localhost/';
-
-        $this->minifyku = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.js');
-
-        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
-        $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
-    }
-
-    public function testLoadCssWithBaseCssUrl()
-    {
-        $this->config->baseCSSURL = 'http://css.localhost/';
-
-        $this->minifyku = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.css');
-
-        $this->assertStringContainsString('<link rel="stylesheet"', $result);
-        $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
-    }
-
-    public function testLoadJsWithBaseJsUrlAndDirMinJs()
-    {
-        $this->config->baseJSURL = 'http://js.localhost/';
-        $this->config->dirMinJs  = SUPPORTPATH . 'public/js';
-
-        $this->minifyku = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.js');
-
-        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
-        $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
-    }
-
-    public function testLoadCssWithBaseCssUrlAndDirMinCss()
-    {
-        $this->config->baseCSSURL = 'http://css.localhost/';
-        $this->config->dirMinCss  = SUPPORTPATH . 'public/css';
-
-        $this->minifyku = new Minifyku($this->config);
-
-        $result = $this->minifyku->load('all.min.css');
-
-        $this->assertStringContainsString('<link rel="stylesheet"', $result);
-        $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
     }
 
     public function testDeployJsWithDirMinJs()
@@ -267,5 +197,91 @@ final class MinifykuTest extends CIUnitTestCase
 
         $this->assertFileExists($this->config->dirMinJs . DIRECTORY_SEPARATOR . array_key_first($this->config->js));
         $this->assertFileExists($this->config->dirMinCss . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
+    }
+
+    public function testLoadJsWithDirMinJs()
+    {
+        if (file_exists($this->config->dirMinJs . '/all.min.js')) {
+            unlink($this->config->dirMinJs . '/all.min.js');
+        }
+
+        $this->config->dirMinJs = SUPPORTPATH . 'public/js';
+        $this->minifyku         = new Minifyku($this->config);
+
+        $this->minifyku->deploy('js');
+        $result = $this->minifyku->load('all.min.js');
+
+        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
+        $this->assertStringContainsString('public/js/all.min.js?v=' . $this->ver['js'], $result);
+    }
+
+    public function testLoadCssWithDirMinCss()
+    {
+        if (file_exists($this->config->dirMinJs . '/all.min.js')) {
+            unlink($this->config->dirMinJs . '/all.min.js');
+        }
+
+        $this->config->dirMinCss = SUPPORTPATH . 'public/css';
+        $this->minifyku          = new Minifyku($this->config);
+
+        $this->minifyku->deploy('css');
+        $result = $this->minifyku->load('all.min.css');
+
+        $this->assertStringContainsString('<link rel="stylesheet"', $result);
+        $this->assertStringContainsString('public/css/all.min.css?v=' . $this->ver['css'], $result);
+    }
+
+    public function testLoadJsWithBaseJsUrl()
+    {
+        $this->config->baseJSURL = 'http://js.localhost/';
+
+        $this->minifyku = new Minifyku($this->config);
+
+        $this->minifyku->deploy('js');
+        $result = $this->minifyku->load('all.min.js');
+
+        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
+        $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
+    }
+
+    public function testLoadCssWithBaseCssUrl()
+    {
+        $this->config->baseCSSURL = 'http://css.localhost/';
+
+        $this->minifyku = new Minifyku($this->config);
+
+        $this->minifyku->deploy('css');
+        $result = $this->minifyku->load('all.min.css');
+
+        $this->assertStringContainsString('<link rel="stylesheet"', $result);
+        $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
+    }
+
+    public function testLoadJsWithBaseJsUrlAndDirMinJs()
+    {
+        $this->config->baseJSURL = 'http://js.localhost/';
+        $this->config->dirMinJs  = SUPPORTPATH . 'public/js';
+
+        $this->minifyku = new Minifyku($this->config);
+
+        $this->minifyku->deploy('js');
+        $result = $this->minifyku->load('all.min.js');
+
+        $this->assertStringContainsString('<script defer type="text/javascript"', $result);
+        $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
+    }
+
+    public function testLoadCssWithBaseCssUrlAndDirMinCss()
+    {
+        $this->config->baseCSSURL = 'http://css.localhost/';
+        $this->config->dirMinCss  = SUPPORTPATH . 'public/css';
+
+        $this->minifyku = new Minifyku($this->config);
+
+        $this->minifyku->deploy('css');
+        $result = $this->minifyku->load('all.min.css');
+
+        $this->assertStringContainsString('<link rel="stylesheet"', $result);
+        $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
     }
 }

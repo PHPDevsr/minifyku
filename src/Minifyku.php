@@ -32,6 +32,11 @@ class Minifyku
     protected string $error = '';
 
     /**
+     * Versioning
+     */
+    protected array $versioning = [];
+
+    /**
      * Prepare config to use
      */
     public function __construct(MinifykuConfig $config)
@@ -53,7 +58,7 @@ class Minifyku
     public function load(string $filename)
     {
         // determine file extension
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
         if (! in_array($ext, ['js', 'css'], true)) {
             throw MinifykuException::forWrongFileExtension($ext);
@@ -219,20 +224,17 @@ class Minifyku
      */
     public function getVersion(string $dir): array
     {
-        static $versions = null;
-
-        // load all versions numbers
-        if ($versions === null) {
-            $dir = rtrim($dir, '/');
-
-            if (! is_file($dir . '/versions.json')) {
-                throw MinifykuException::forNoVersioningFile(); // @codeCoverageIgnore
-            }
-
-            $versions = (array) json_decode(file_get_contents($dir . '/versions.json'), true);
+        if ($this->versioning !== []) {
+            return $this->versioning;
         }
 
-        return $versions;
+        $dir = rtrim($dir, '/');
+
+        if (! is_file($dir . '/versions.json')) {
+            throw MinifykuException::forNoVersioningFile(); // @codeCoverageIgnore
+        }
+
+        return (array) json_decode(file_get_contents($dir . '/versions.json'), true);
     }
 
     /**
@@ -242,21 +244,27 @@ class Minifyku
      * @param array  $files Files
      * @param string $dir   Directory
      */
-    protected function setVersion(string $mode, array $files, string $dir)
+    protected function setVersion(string $mode, array $files, string $dir): array
     {
         $dir = rtrim($dir, '/');
 
-        if (is_file($dir . '/versions.json')) {
-            $versions = json_decode(file_get_contents($dir . '/versions.json'), true);
-        }
-
         if ($mode === 'all') {
-            $versions = $files;
+            $this->versioning = $files;
+
+            // Rewrite Versioning File
+            file_put_contents($dir . '/versions.json', json_encode($this->versioning));
+
+            return $this->versioning;
         }
 
         $versions[$mode] = $files;
 
-        return file_put_contents($dir . '/versions.json', json_encode($versions));
+        // Rewrite Versioning File
+        file_put_contents($dir . '/versions.json', json_encode($versions));
+
+        $this->versioning = $versions;
+
+        return $this->versioning;
     }
 
     /**
