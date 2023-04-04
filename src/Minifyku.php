@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace PHPDevsr\Minifyku;
 
-use MatthiasMullie\Minify\CSS as MinifyCSS;
-use MatthiasMullie\Minify\JS as MinifyJS;
+use PHPDevsr\Minifyku\Adapters\MinifykuAdapter;
 use PHPDevsr\Minifyku\Config\Minifyku as MinifykuConfig;
 use PHPDevsr\Minifyku\Exceptions\MinifykuException;
 
@@ -15,16 +14,6 @@ class Minifyku
      * Config object.
      */
     protected MinifykuConfig $config;
-
-    /**
-     * Minify CSS Class
-     */
-    protected MinifyCSS $minify_css;
-
-    /**
-     * Minify JS Class
-     */
-    protected MinifyJS $minify_js;
 
     /**
      * Error string.
@@ -42,10 +31,6 @@ class Minifyku
     public function __construct(MinifykuConfig $config)
     {
         $this->config = $config;
-
-        // Set properties class Minify
-        $this->minify_css = new MinifyCSS();
-        $this->minify_js  = new MinifyJS();
     }
 
     /**
@@ -277,13 +262,9 @@ class Minifyku
      */
     protected function deployFiles(string $fileType, array $assets, string $dir, ?string $minDir = null): array
     {
-        $classMinify = '';
-
         if (! in_array($fileType, ['js', 'css'], true)) {
             throw MinifykuException::forWrongFileExtension($fileType);
         }
-
-        $classMinify = $fileType === 'js' ? 'minify_js' : 'minify_css';
 
         $dir = rtrim($dir, '/');
 
@@ -294,12 +275,14 @@ class Minifyku
         $results = [];
 
         foreach ($assets as $asset => $files) {
+            $class = new MinifykuAdapter($fileType);
+
             foreach ($files as $file) {
-                $this->{$classMinify}->add($dir . DIRECTORY_SEPARATOR . $file);
+                $class->add($dir . DIRECTORY_SEPARATOR . $file);
             }
 
             // Minify
-            $this->{$classMinify}->minify($minDir . DIRECTORY_SEPARATOR . $asset);
+            $class->minify($minDir . DIRECTORY_SEPARATOR . $asset);
 
             // Set File Minified to Result
             $results[$asset] = md5_file($minDir . DIRECTORY_SEPARATOR . $asset);
