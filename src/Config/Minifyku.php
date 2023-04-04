@@ -51,7 +51,7 @@ class Minifyku extends BaseConfig
      *
      * Location your folder JS with Minified
      */
-    public string $dirMinJs = './assets/css/min';
+    public string $dirMinJs = './assets/js/min';
 
     /**
      * --------------------------------------------------------------------
@@ -60,7 +60,7 @@ class Minifyku extends BaseConfig
      *
      * Location your folder CSS with Minified
      */
-    public string $dirMinCss = './assets/js/min';
+    public string $dirMinCss = './assets/css/min';
 
     /**
      * --------------------------------------------------------------------
