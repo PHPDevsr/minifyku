@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of PHPDevsr/Minifyku.
+ *
+ * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
 use CodeIgniter\CodingStandard\CodeIgniter4;
 use Nexus\CsConfig\Factory;
 use PhpCsFixer\Finder;
@@ -25,4 +34,9 @@ $options = [
     'cacheFile' => 'build/.php-cs-fixer.cache',
 ];
 
-return Factory::create(new CodeIgniter4(), $overrides, $options)->forProjects();
+return Factory::create(new CodeIgniter4(), $overrides, $options)->forLibrary(
+    'PHPDevsr/Minifyku',
+    'Denny Septian Panggabean',
+    'xamidimura@gmail.com',
+    2023
+);
