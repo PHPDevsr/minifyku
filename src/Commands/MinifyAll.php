@@ -9,7 +9,7 @@ use CodeIgniter\Config\Services;
 class MinifyAll extends BaseCommand
 {
     protected $group       = 'Minifyku';
-    protected $name        = 'minify:all';
+    protected $name        = 'minifyku:minify';
     protected $description = 'Minify all assets.';
 
     public function __construct()

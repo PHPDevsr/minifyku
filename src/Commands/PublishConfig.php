@@ -10,7 +10,7 @@ use Exception;
 class PublishConfig extends BaseCommand
 {
     protected $group       = 'Minifyku';
-    protected $name        = 'minify:publish';
+    protected $name        = 'minifyku:publish';
     protected $description = 'Minify config file publisher.';
 
     /**

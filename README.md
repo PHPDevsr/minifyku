@@ -20,7 +20,7 @@ $ composer require phpdevsr/minifyku
 # Configuration
 
 ```bash
-$ php spark minify:publish
+$ php spark minifyku:publish
 ```
 
 This command will copy a config file to your app namespace. Then you can adjust it to your needs. By default, file will be present in ```app/Config/Minifyku.php```.
@@ -46,7 +46,7 @@ This configuration will be minify and combine file ```bootstrap.js```,```jquery.
 Run command for minification your all assets:
 
 ```bash
-$ php spark minify:all
+$ php spark minifyku:minify
 ```
 
 This will prepare everything and will set up a versioning. Make sure to load a minifier helper in your controller, by calling:
