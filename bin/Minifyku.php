@@ -1,7 +1,6 @@
 <?php
 
 declare (strict_types=1);
-namespace PHPDevsr\Minifyku;
 
 use PHPDevsr\Minifyku\Commands\MinifyAll;
 // @ intentionally: continue anyway

@@ -2,4 +2,5 @@
 <?php 
 namespace PHPDevsr\Minifyku;
 
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/Minifyku.php';
