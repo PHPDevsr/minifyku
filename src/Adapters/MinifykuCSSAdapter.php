@@ -3,34 +3,22 @@
 namespace PHPDevsr\Minifyku\Adapters;
 
 use MatthiasMullie\Minify\CSS as MinifyCSS;
-use MatthiasMullie\Minify\JS as MinifyJS;
-use PHPDevsr\Minifyku\Exceptions\MinifykuException;
 
-class MinifykuAdapter implements AdapterInterface
+class MinifykuCSSAdapter implements AdapterInterface
 {
     /**
      * Adapter object.
      *
-     * @var MinifyCSS|MinifyJS
+     * @var object
      */
     protected $adapter;
 
     /**
      * __construct
      */
-    public function __construct(string $type = 'css')
+    public function __construct()
     {
-        if (! in_array($type, ['js', 'css'], true)) {
-            throw MinifykuException::forWrongFileExtension($type);
-        }
-
-        if ($type === 'js') {
-            $this->adapter = new MinifyJS();
-        }
-
-        if ($type === 'css') {
-            $this->adapter = new MinifyCSS();
-        }
+        $this->adapter = new MinifyCSS();
     }
 
     /**

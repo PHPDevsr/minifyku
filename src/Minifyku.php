@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PHPDevsr\Minifyku;
 
-use PHPDevsr\Minifyku\Adapters\MinifykuAdapter;
+use PHPDevsr\Minifyku\Adapters\MinifykuCSSAdapter;
+use PHPDevsr\Minifyku\Adapters\MinifykuJSAdapter;
 use PHPDevsr\Minifyku\Config\Minifyku as MinifykuConfig;
 use PHPDevsr\Minifyku\Exceptions\MinifykuException;
 
@@ -272,10 +273,11 @@ class Minifyku
             $minDir = $dir;
         }
 
-        $results = [];
+        $classMinify = $fileType === 'js' ? MinifykuJSAdapter::class : MinifykuCSSAdapter::class;
+        $results     = [];
 
         foreach ($assets as $asset => $files) {
-            $class = new MinifykuAdapter($fileType);
+            $class = new $classMinify();
 
             foreach ($files as $file) {
                 $class->add($dir . DIRECTORY_SEPARATOR . $file);
