@@ -19,9 +19,6 @@
         }
     ],
     "homepage": "https://github.com/PHPDevsr/minifyku",
-    "bin": [
-        "bin/minifyku"
-    ],
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
