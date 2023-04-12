@@ -98,6 +98,19 @@ final class MinifykuTest extends CIUnitTestCase
         $this->minifyku->load('all.min.php');
     }
 
+    public function testLoadExceptionForMissingVersioningFile()
+    {
+        $this->expectException(MinifykuException::class);
+        $this->expectExceptionMessage('There is no file with versioning. Run "php spark minifyku:minify" command first.');
+
+        if (file_exists($this->config->dirVersion . '/versions.json')) {
+            unlink($this->config->dirVersion . '/versions.json');
+        }
+
+        $this->minifyku = new Minifyku($this->config);
+        $this->minifyku->load('all.min.css');
+    }
+
     public function testDeployJs()
     {
         $this->minifyku = new Minifyku($this->config);
