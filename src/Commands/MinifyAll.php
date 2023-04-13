@@ -15,6 +15,11 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Config\Services;
 
+/**
+ * Minify all assets
+ *
+ * @codeCoverageIgnore
+ */
 class MinifyAll extends BaseCommand
 {
     protected $group       = 'Minifyku';
@@ -47,7 +52,7 @@ class MinifyAll extends BaseCommand
 
         $time = $benchmark->getElapsedTime('Minifyku');
 
-        CLI::write('[+] Finished in: ' . $time . 's.');
+        CLI::write('[+] Finished in: ' . CLI::color($time . 's.', 'green'));
         CLI::write('[+] All files were successfully generated.', 'green');
     }
 }

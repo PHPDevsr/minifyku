@@ -16,6 +16,11 @@ use CodeIgniter\CLI\CLI;
 use Config\Autoload;
 use Exception;
 
+/**
+ * Publish Config File
+ *
+ * @codeCoverageIgnore
+ */
 class PublishConfig extends BaseCommand
 {
     protected $group       = 'Minifyku';
@@ -29,7 +34,9 @@ class PublishConfig extends BaseCommand
      */
     protected $sourcePath = '';
 
-    // --------------------------------------------------------------------
+    public function __construct()
+    {
+    }
 
     /**
      * Copy config file
@@ -41,8 +48,6 @@ class PublishConfig extends BaseCommand
 
         CLI::write('[+] Config file was successfully generated.', 'green');
     }
-
-    // --------------------------------------------------------------------
 
     /**
      * Determines the current source path from which all other files are located.
@@ -58,8 +63,6 @@ class PublishConfig extends BaseCommand
         }
     }
 
-    // --------------------------------------------------------------------
-
     /**
      * Publish config file.
      */
@@ -74,8 +77,6 @@ class PublishConfig extends BaseCommand
 
         $this->writeFile('Config/Minifyku.php', $content);
     }
-
-    // --------------------------------------------------------------------
 
     /**
      * Write a file, catching any exceptions and showing a nicely formatted error.
