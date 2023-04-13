@@ -49,6 +49,16 @@ Run command for minification your all assets:
 $ php spark minifyku:minify
 ```
 
+or you want minify JS/CSS files:
+
+```bash
+$ php spark minifyku:minify-js
+```
+
+```bash
+$ php spark minifyku:minify-css
+```
+
 This will prepare everything and will set up a versioning. Make sure to load a minifier helper in your controller, by calling:
 
 ```php
