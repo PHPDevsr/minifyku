@@ -98,16 +98,6 @@ class Minifyku extends BaseConfig
      */
     public string $tagCss = '<link rel="stylesheet" href="%s">';
 
-    // --------------------------------------------------------------------
-    // JS files config
-    // --------------------------------------------------------------------
-    // This array defines files to minify.
-    //
-    // Example array:
-    //      'all.min.js' => [
-    //          'jquery-3.2.1.min.js', 'bootstrap-3.3.7.min.js', 'main.js',
-    //      ],
-
     /**
      * --------------------------------------------------------------------
      * JS Files - Config
