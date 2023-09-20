@@ -54,9 +54,9 @@ class PublishConfig extends BaseCommand
      */
     protected function determineSourcePath()
     {
-        $this->sourcePath = realpath(__DIR__ . '/../');
+        $this->sourcePath = realpath(__DIR__ . '/..');
 
-        if ($this->sourcePath === '/' || empty($this->sourcePath)) {
+        if (in_array($this->sourcePath, ['/', ''], true) || $this->sourcePath === false) {
             CLI::error('[-] Unable to determine the correct source directory.');
 
             exit();
