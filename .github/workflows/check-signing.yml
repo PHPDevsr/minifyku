@@ -13,7 +13,6 @@ concurrency:
 
 permissions:
   contents: read
-  issues: write
   pull-requests: write
 
 jobs:
@@ -27,6 +26,7 @@ jobs:
       - name: Check signed commits in PR
         uses: 1Password/check-signed-commits-action@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           comment: |
             You must GPG-sign your work, certifying that you either wrote the work or otherwise have the right to pass it on to an open-source project. See Developer's Certificate of Origin. See [signing][1].
 
