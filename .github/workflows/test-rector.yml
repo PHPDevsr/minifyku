@@ -3,7 +3,7 @@ name: Rector
 on:
   pull_request:
     branches:
-      - dev
+      - 'dev'
     paths:
       - 'src/**.php'
       - 'composer.*'
@@ -11,7 +11,7 @@ on:
       - '.github/workflows/test-rector.yml'
   push:
     branches:
-      - dev
+      - 'dev'
     paths:
       - 'src/**.php'
       - 'composer.*'
@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.0', '8.1', '8.2']
+        php-versions: ['8.1', '8.2']
 
     steps:
       - name: Checkout

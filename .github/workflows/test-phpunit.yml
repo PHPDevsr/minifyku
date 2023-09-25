@@ -3,7 +3,7 @@ name: PHPUnit
 on:
   pull_request:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - 'composer.*'
@@ -11,7 +11,7 @@ on:
       - '.github/workflows/test-phpunit.yml'
   push:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - 'composer.*'

@@ -3,13 +3,13 @@ name: Coding Standard
 on:
   pull_request:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - '.github/workflows/test-coding-standard.yml'
   push:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - '.github/workflows/test-coding-standard.yml'
