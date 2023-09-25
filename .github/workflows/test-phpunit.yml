@@ -3,7 +3,7 @@ name: PHPUnit
 on:
   pull_request:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - 'composer.*'
@@ -11,7 +11,7 @@ on:
       - '.github/workflows/test-phpunit.yml'
   push:
     branches:
-      - dev
+      - 'dev'
     paths:
       - '**.php'
       - 'composer.*'
@@ -41,7 +41,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: composer, phive, phpunit
+          tools: composer, phpunit
           extensions: intl, json, mbstring, gd, xdebug, xml
           coverage: xdebug
         env:
@@ -68,17 +68,21 @@ jobs:
           fi
 
       - name: Test with PHPUnit
-        run: vendor/bin/phpunit --verbose --coverage-text --testsuite main
+        run: vendor/bin/phpunit --verbose --coverage-text --coverage-clover build/logs/clover.xml --coverage-php build/cov/coverage.cov --testsuite main
         env:
           TERM: xterm-256color
           TACHYCARDIA_MONITOR_GA: enabled
 
-      - if: matrix.php-versions == '8.0'
-        name: Run Coveralls
+      - if: matrix.php-versions == '8.1'
+        name: Merge Coveralls
         continue-on-error: true
         run: |
-          sudo phive --no-progress install --global --trust-gpg-keys E82B2FB314E9906E php-coveralls
-          php-coveralls --verbose --coverage_clover=build/phpunit/clover.xml --json_path build/phpunit/coveralls-upload.json
+          vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov
+
+      - if: matrix.php-versions == '8.1'
+        name: Run Coveralls
+        run: |
+          vendor/bin/php-coveralls --verbose --exclude-no-stmt --ansi
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_PARALLEL: true

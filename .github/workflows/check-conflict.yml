@@ -1,35 +1,28 @@
-name: Auto Label Conflicts
+name: Check conflict branch in PR
 on:
-  pull_request:
-    branches:
-      - 'dev'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
-  pull-requests: write
+  schedule:
+    - cron: '*/20 * * * *' # Run at every 20 minutes
 
 jobs:
-  auto-label-conflict:
+  build:
+    name: Check conflict branch in PR
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: prince-chrismc/label-merge-conflicts-action@v3
-        with:
-          conflict_label_name: 'stale'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-          # --- Optional Inputs ---
-          # To make sure the merge commit exactly matches the branch
-          detect_merge_changes: true # or true to handle as conflicts
-          # By default a comment will be left, adding `conflict_comment: ''` will disable comments
-          # The optional `${author}` will be replaced with the username of the pull request
-          conflict_comment: |
-            :wave: Hi, @${author},
+      - name: Check conflict branch in PR
+        uses: PHPDevsr/check-conflict-action@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          label: stale
+          comment: |
+            :wave: Hi, @authorTarget!
 
             We detected conflicts in your PR against the base branch :speak_no_evil:
             You may want to sync :arrows_counterclockwise: your branch with upstream!
 
-            Ref: https://github.com/codeigniter4/CodeIgniter4/blob/develop/contributing/workflow.md#pushing-your-branch
+            Ref: [Syncing Your Branch](https://github.com/codeigniter4/CodeIgniter4/blob/develop/contributing/workflow.md#pushing-your-branch)
