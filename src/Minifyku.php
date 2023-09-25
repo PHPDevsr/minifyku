@@ -59,7 +59,9 @@ class Minifyku
             throw MinifykuException::forWrongFileExtension($ext);
         }
 
-        $this->autoDeployCheckFile($ext, $filename);
+        if ($this->config->autoMinify) {
+            $this->autoDeployCheckFile($ext);
+        }
 
         // load versions
         $versions = $this->getVersion($this->config->dirVersion);
@@ -127,44 +129,13 @@ class Minifyku
     }
 
     /**
-     * Auto deploy check for CSS files
+     * Auto deploy
      *
-     * @param string $fileType File type [css, js]
-     * @param string $filename Filename
+     * @param string $fileType File type (css/js)
      */
-    protected function autoDeployCheckFile(string $fileType, string $filename): bool
+    protected function autoDeployCheckFile(string $fileType = 'all'): bool
     {
-        $dir    = 'dir' . strtoupper($fileType);
-        $dirMin = 'dirMin' . ucfirst(strtolower($fileType));
-
-        if ($this->config->{$dirMin} === null) {
-            $dirMin = $dir;
-        }
-
-        $assets   = [$filename => $this->config->{$fileType}[$filename]];
-        $filePath = $this->config->{$dirMin} . '/' . $filename;
-
-        // if file is not deployed
-        if (! file_exists($filePath)) {
-            $this->deployFiles($fileType, $assets, $this->config->{$dir}, $this->config->{$dirMin});
-
-            return true;
-        }
-
-        // get last deploy time
-        $lastDeployTime = filemtime($filePath);
-
-        // loop though the files and check last update time
-        foreach ($assets[$filename] as $file) {
-            $currentFileTime = filemtime($this->config->{$dir} . '/' . $file);
-            if ($currentFileTime > $lastDeployTime) {
-                $this->deployFiles($fileType, $assets, $this->config->{$dir}, $this->config->{$dirMin});
-
-                return true;
-            }
-        }
-
-        return false;
+        return $this->deploy($fileType);
     }
 
     /**
