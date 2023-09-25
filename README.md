@@ -41,6 +41,12 @@ public array $css = [
 
 This configuration will be minify and combine file ```bootstrap.js```,```jquery.js```,```main.js``` to ```all.min.js```. Or minify and combine file ```bootstrap.css```,```font-awesome.css```,```main.css``` to ```all.min.css```.
 
+Since `v2.0.0`, new option `autoMinify` for you need automated minify when loaded using helper `minifyku()` and can be replaced by `.env` with `minifyku.autoMinify = true`. Please dont use in ***production***, it will take more time.
+
+```php
+public bool $autoMinify = false;
+```
+
 # Usage
 
 Run command for minification your all assets:
