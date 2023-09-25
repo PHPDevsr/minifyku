@@ -125,4 +125,13 @@ class Minifyku extends BaseConfig
      *      ],
      */
     public array $css = [];
+
+    /**
+     * --------------------------------------------------------------------
+     * Auto Minify
+     * --------------------------------------------------------------------
+     *
+     * Automated minify when you load css. Default is false, you must minify first before get css or js to latest
+     */
+    public bool $autoMinify = false;
 }
