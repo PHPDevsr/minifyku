@@ -41,6 +41,9 @@ class Minifyku
     public function __construct(MinifykuConfig $config)
     {
         $this->config = $config;
+
+        // Will replace with .env
+        $this->config->autoMinify = env('minifyku.autoMinify') ?? $this->config->autoMinify;
     }
 
     /**
@@ -60,7 +63,7 @@ class Minifyku
         }
 
         if ($this->config->autoMinify) {
-            $this->autoDeployCheckFile($ext);
+            $this->deploy('all');
         }
 
         // load versions
@@ -126,16 +129,6 @@ class Minifyku
     public function getError(): string
     {
         return $this->error;
-    }
-
-    /**
-     * Auto deploy
-     *
-     * @param string $fileType File type (css/js)
-     */
-    protected function autoDeployCheckFile(string $fileType = 'all'): bool
-    {
-        return $this->deploy($fileType);
     }
 
     /**
