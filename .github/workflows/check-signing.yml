@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check signed commits in PR
-        uses: 1Password/check-signed-commits-action@v1.0.0
+        uses: 1Password/check-signed-commits-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           comment: |
