@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "codeigniter4/framework": "^4.4",
-        "codeigniter/coding-standard": "^1.7",
+        "codeigniter/coding-standard": "^1.8",
         "nexusphp/tachycardia": "^1.4",
         "php-coveralls/php-coveralls": "^2.5",
         "phpstan/phpstan": "^1.10",
