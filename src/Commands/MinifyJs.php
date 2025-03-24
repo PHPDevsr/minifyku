@@ -3,7 +3,7 @@
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,7 +13,7 @@ namespace PHPDevsr\Minifyku\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use CodeIgniter\Config\Services;
+use CodeIgniter\Debug\Timer;
 
 /**
  * Minify JS assets
@@ -22,9 +22,43 @@ use CodeIgniter\Config\Services;
  */
 class MinifyJs extends BaseCommand
 {
-    protected $group       = 'Minifyku';
-    protected $name        = 'minifyku:minify-js';
+    /**
+     * The group the command is lumped under
+     * when listing commands.
+     *
+     * @var string
+     */
+    protected $group = 'Minifyku';
+
+    /**
+     * The Command's name
+     *
+     * @var string
+     */
+    protected $name = 'minifyku:minify-js';
+
+    /**
+     * The Command's short description
+     *
+     * @var string
+     */
     protected $description = 'Minify all assets JS.';
+
+    /**
+     * The Command's usage
+     *
+     * @var string
+     */
+    protected $usage = 'minifyku:minify-js';
+
+    /**
+     * The Command's Options
+     *
+     * @var array<string, string>
+     */
+    protected $options = [
+        '--gzip' => 'The gzip compression level. By default, all minified without gzip compression.',
+    ];
 
     public function __construct()
     {
@@ -32,15 +66,20 @@ class MinifyJs extends BaseCommand
 
     /**
      * Prepare assets to use on website
+     *
+     * @param array<int|string, string|null> $params
      */
-    public function run(array $params)
+    public function run(array $params): void
     {
-        $benchmark = Services::timer();
+        $gzipLevel = $params['gzip'] ?? 0;
+
+        /** @var Timer $benchmark */
+        $benchmark = service('timer');
         $minify    = service('minifyku');
 
         $benchmark->start('Minifyku');
 
-        $result = $minify->deploy('js');
+        $result = $minify->deploy('js', $gzipLevel);
 
         $benchmark->stop('Minifyku');
 

@@ -3,7 +3,7 @@
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -40,8 +40,10 @@ class PublishConfig extends BaseCommand
 
     /**
      * Copy config file
+     *
+     * @param array<int|string, string|null> $params
      */
-    public function run(array $params)
+    public function run(array $params): void
     {
         $this->determineSourcePath();
         $this->publishConfig();
@@ -100,8 +102,8 @@ class PublishConfig extends BaseCommand
 
         try {
             write_file($appPath . $path, $content);
-        } catch (Exception $e) {
-            $this->showError($e);
+        } catch (Exception $exception) {
+            $this->showError($exception);
 
             exit();
         }

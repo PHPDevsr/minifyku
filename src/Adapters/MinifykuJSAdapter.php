@@ -3,7 +3,7 @@
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -17,10 +17,8 @@ class MinifykuJSAdapter implements AdapterInterface
 {
     /**
      * Adapter object.
-     *
-     * @var object
      */
-    protected $adapter;
+    protected MinifyJS $adapter;
 
     /**
      * __construct
@@ -35,7 +33,7 @@ class MinifykuJSAdapter implements AdapterInterface
      *
      * @param string $file File name
      */
-    public function add($file)
+    public function add($file): void
     {
         $this->adapter->add($file);
     }
@@ -48,5 +46,18 @@ class MinifykuJSAdapter implements AdapterInterface
     public function minify(string $file)
     {
         return $this->adapter->minify($file);
+    }
+
+    /**
+     * Minify file with compression
+     *
+     * @param string $file  File name
+     * @param int    $level Level Compression (0-9)
+     *
+     * @return string
+     */
+    public function gzip(string $file, int $level = 6)
+    {
+        return $this->adapter->gzip($file, $level);
     }
 }

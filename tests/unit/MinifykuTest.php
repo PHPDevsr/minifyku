@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -78,7 +78,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->config->autoMinify = false;
     }
 
-    public function testConfig()
+    public function testConfig(): void
     {
         $this->assertInstanceOf(MinifykuConfig::class, $this->config);
 
@@ -89,7 +89,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertSame(['all.min.css' => ['bootstrap.css', 'font-awesome.css', 'main.css']], $this->config->css);
     }
 
-    public function testDeployExceptionForIncorrectDeploymentMode()
+    public function testDeployExceptionForIncorrectDeploymentMode(): void
     {
         $this->expectException(MinifykuException::class);
         $this->expectExceptionMessage('The "incorrect" is not correct deployment mode');
@@ -99,7 +99,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->minifyku->deploy('incorrect');
     }
 
-    public function testLoadExceptionForWrongFileExtension()
+    public function testLoadExceptionForWrongFileExtension(): void
     {
         $this->expectException(MinifykuException::class);
         $this->expectExceptionMessage('Wrong file extension: ".php".');
@@ -109,7 +109,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->minifyku->load('all.min.php');
     }
 
-    public function testLoadExceptionForMissingVersioningFile()
+    public function testLoadExceptionForMissingVersioningFile(): void
     {
         $this->expectException(MinifykuException::class);
         $this->expectExceptionMessage('There is no file with versioning. Run "php spark minifyku:minify" command first.');
@@ -122,7 +122,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->minifyku->load('all.min.css');
     }
 
-    public function testDeployJs()
+    public function testDeployJs(): void
     {
         $this->minifyku = new Minifyku($this->config);
 
@@ -133,7 +133,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirJS . DIRECTORY_SEPARATOR . array_key_first($this->config->js));
     }
 
-    public function testDeployCss()
+    public function testDeployCss(): void
     {
         $this->minifyku = new Minifyku($this->config);
 
@@ -144,7 +144,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirCSS . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
     }
 
-    public function testDeployAll()
+    public function testDeployAll(): void
     {
         $this->minifyku = new Minifyku($this->config);
 
@@ -156,7 +156,19 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirCSS . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
     }
 
-    public function testDeployJsWithDirMinJs()
+    public function testDeployAllWithGzip(): void
+    {
+        $this->minifyku = new Minifyku($this->config);
+
+        $result = $this->minifyku->deploy('all', 6);
+
+        $this->assertTrue($result);
+
+        $this->assertFileExists($this->config->dirJS . DIRECTORY_SEPARATOR . array_key_first($this->config->js));
+        $this->assertFileExists($this->config->dirCSS . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
+    }
+
+    public function testDeployJsWithDirMinJs(): void
     {
         if (file_exists($this->config->dirMinJs . '/all.min.js')) {
             unlink($this->config->dirMinJs . '/all.min.js');
@@ -172,7 +184,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirMinJs . DIRECTORY_SEPARATOR . array_key_first($this->config->js));
     }
 
-    public function testDeployCssWithDirMinCss()
+    public function testDeployCssWithDirMinCss(): void
     {
         if (file_exists($this->config->dirMinCss . '/all.min.css')) {
             unlink($this->config->dirMinCss . '/all.min.css');
@@ -188,7 +200,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirMinCss . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
     }
 
-    public function testDeployAllWithDirMinJsAndCss()
+    public function testDeployAllWithDirMinJsAndCss(): void
     {
         if (file_exists($this->config->dirMinJs . '/all.min.js')) {
             unlink($this->config->dirMinJs . '/all.min.js');
@@ -210,7 +222,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertFileExists($this->config->dirMinCss . DIRECTORY_SEPARATOR . array_key_first($this->config->css));
     }
 
-    public function testLoadJsWithDirMinJs()
+    public function testLoadJsWithDirMinJs(): void
     {
         if (file_exists($this->config->dirMinJs . '/all.min.js')) {
             unlink($this->config->dirMinJs . '/all.min.js');
@@ -226,7 +238,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('public/js/all.min.js?v=' . $this->ver['js'], $result);
     }
 
-    public function testLoadCssWithDirMinCss()
+    public function testLoadCssWithDirMinCss(): void
     {
         if (file_exists($this->config->dirMinJs . '/all.min.js')) {
             unlink($this->config->dirMinJs . '/all.min.js');
@@ -242,7 +254,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('public/css/all.min.css?v=' . $this->ver['css'], $result);
     }
 
-    public function testLoadJsWithBaseJsUrl()
+    public function testLoadJsWithBaseJsUrl(): void
     {
         $this->config->baseJSURL = 'http://js.localhost/';
 
@@ -255,7 +267,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
     }
 
-    public function testLoadCssWithBaseCssUrl()
+    public function testLoadCssWithBaseCssUrl(): void
     {
         $this->config->baseCSSURL = 'http://css.localhost/';
 
@@ -268,7 +280,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
     }
 
-    public function testLoadJsWithBaseJsUrlAndDirMinJs()
+    public function testLoadJsWithBaseJsUrlAndDirMinJs(): void
     {
         $this->config->baseJSURL = 'http://js.localhost/';
         $this->config->dirMinJs  = SUPPORTPATH . 'public/js';
@@ -282,7 +294,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('http://js.localhost/all.min.js?v=' . $this->ver['js'], $result);
     }
 
-    public function testLoadCssWithBaseCssUrlAndDirMinCss()
+    public function testLoadCssWithBaseCssUrlAndDirMinCss(): void
     {
         $this->config->baseCSSURL = 'http://css.localhost/';
         $this->config->dirMinCss  = SUPPORTPATH . 'public/css';
@@ -296,7 +308,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('http://css.localhost/all.min.css?v=' . $this->ver['css'], $result);
     }
 
-    public function testLoadJs()
+    public function testLoadJs(): void
     {
         // Set automatically minify
         $this->config->autoMinify = true;
@@ -309,7 +321,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('assets/js/all.min.js?v=' . $this->ver['js'], $result);
     }
 
-    public function testLoadCss()
+    public function testLoadCss(): void
     {
         // Set automatically minify
         $this->config->autoMinify = true;
@@ -322,7 +334,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('assets/css/all.min.css?v=' . $this->ver['css'], $result);
     }
 
-    public function testLoadJsWithoutAutoMinify()
+    public function testLoadJsWithoutAutoMinify(): void
     {
         $this->minifyku = new Minifyku($this->config);
 
@@ -333,7 +345,7 @@ final class MinifykuTest extends CIUnitTestCase
         $this->assertStringContainsString('assets/js/all.min.js?v=' . $this->ver['js'], $result);
     }
 
-    public function testLoadCssWithoutAutoMinify()
+    public function testLoadCssWithoutAutoMinify(): void
     {
         $this->minifyku = new Minifyku($this->config);
 

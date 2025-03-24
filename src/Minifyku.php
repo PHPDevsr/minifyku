@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -21,11 +21,6 @@ use PHPDevsr\Minifyku\Exceptions\MinifykuException;
 class Minifyku
 {
     /**
-     * Config object.
-     */
-    protected MinifykuConfig $config;
-
-    /**
      * Error string.
      */
     protected string $error = '';
@@ -38,10 +33,8 @@ class Minifyku
     /**
      * Prepare config to use
      */
-    public function __construct(MinifykuConfig $config)
+    public function __construct(protected MinifykuConfig $config)
     {
-        $this->config = $config;
-
         // Will replace with .env
         $this->config->autoMinify = env('minifyku.autoMinify') ?? $this->config->autoMinify;
     }
@@ -50,10 +43,8 @@ class Minifyku
      * Load minified file
      *
      * @param string $filename File name
-     *
-     * @return string
      */
-    public function load(string $filename)
+    public function load(string $filename): string
     {
         // determine file extension
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
@@ -88,9 +79,10 @@ class Minifyku
     /**
      * Deploy
      *
-     * @param string $mode Deploy mode
+     * @param string $mode      Deploy mode
+     * @param int    $levelGzip Level Compression (0-9)
      */
-    public function deploy(string $mode = 'all'): bool
+    public function deploy(string $mode = 'all', int $levelGzip = 0): bool
     {
         if (! in_array($mode, ['all', 'js', 'css'], true)) {
             throw MinifykuException::forIncorrectDeploymentMode($mode);
@@ -101,23 +93,23 @@ class Minifyku
         try {
             switch ($mode) {
                 case 'js':
-                    $files = $this->deployFiles('js', $this->config->js, $this->config->dirJS, $this->config->dirMinJs);
+                    $files = $this->deployFiles('js', $this->config->js, $this->config->dirJS, $this->config->dirMinJs, $levelGzip);
                     break;
 
                 case 'css':
-                    $files = $this->deployFiles('css', $this->config->css, $this->config->dirCSS, $this->config->dirMinCss);
+                    $files = $this->deployFiles('css', $this->config->css, $this->config->dirCSS, $this->config->dirMinCss, $levelGzip);
                     break;
 
                 default:
-                    $files['js']  = $this->deployFiles('js', $this->config->js, $this->config->dirJS, $this->config->dirMinJs);
-                    $files['css'] = $this->deployFiles('css', $this->config->css, $this->config->dirCSS, $this->config->dirMinCss);
+                    $files['js']  = $this->deployFiles('js', $this->config->js, $this->config->dirJS, $this->config->dirMinJs, $levelGzip);
+                    $files['css'] = $this->deployFiles('css', $this->config->css, $this->config->dirCSS, $this->config->dirMinCss, $levelGzip);
             }
 
             $this->setVersion($mode, $files, $this->config->dirVersion);
 
             return true;
-        } catch (MinifykuException $e) {
-            $this->error = $e->getMessage();
+        } catch (MinifykuException $minifykuException) {
+            $this->error = $minifykuException->getMessage();
 
             return false;
         }
@@ -159,10 +151,8 @@ class Minifyku
      * @param array  $filenames Filenames to return
      * @param string $dir       Directory
      * @param string $tag       HTML tag
-     *
-     * @return string
      */
-    protected function prepareOutput(array $filenames, string $dir = '', string $tag = '')
+    protected function prepareOutput(array $filenames, string $dir = '', string $tag = ''): string
     {
         // prepare output
         $output = '';
@@ -229,12 +219,13 @@ class Minifyku
     /**
      * Deploy files
      *
-     * @param string      $fileType File type [css, js]
-     * @param array       $assets   CSS assets
-     * @param string      $dir      Directory
-     * @param string|null $minDir   Minified directory
+     * @param string      $fileType  File type [css, js]
+     * @param array       $assets    CSS assets
+     * @param string      $dir       Directory
+     * @param string|null $minDir    Minified directory
+     * @param int         $levelGzip Level Compression (0-9)
      */
-    protected function deployFiles(string $fileType, array $assets, string $dir, ?string $minDir = null): array
+    protected function deployFiles(string $fileType, array $assets, string $dir, ?string $minDir = null, int $levelGzip = 0): array
     {
         if (! in_array($fileType, ['js', 'css'], true)) {
             throw MinifykuException::forWrongFileExtension($fileType);
@@ -246,18 +237,22 @@ class Minifyku
             $minDir = $dir;
         }
 
-        $classMinify = $fileType === 'js' ? MinifykuJSAdapter::class : MinifykuCSSAdapter::class;
-        $results     = [];
+        $class = $fileType === 'js' ? new MinifykuJSAdapter() : new MinifykuCSSAdapter();
+
+        // Set empty result
+        $results = [];
 
         foreach ($assets as $asset => $files) {
-            $class = new $classMinify();
-
             foreach ($files as $file) {
                 $class->add($dir . DIRECTORY_SEPARATOR . $file);
             }
 
             // Minify
-            $class->minify($minDir . DIRECTORY_SEPARATOR . $asset);
+            if ($levelGzip > 0) {
+                $class->gzip($minDir . DIRECTORY_SEPARATOR . $asset, $levelGzip);
+            } else {
+                $class->minify($minDir . DIRECTORY_SEPARATOR . $asset);
+            }
 
             // Set File Minified to Result
             $results[$asset] = md5_file($minDir . DIRECTORY_SEPARATOR . $asset);

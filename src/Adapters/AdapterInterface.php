@@ -3,7 +3,7 @@
 /**
  * This file is part of PHPDevsr/Minifyku.
  *
- * (c) 2023 Denny Septian Panggabean <xamidimura@gmail.com>
+ * (c) 2025 Denny Septian Panggabean <xamidimura@gmail.com>
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,7 +16,7 @@ interface AdapterInterface
     /**
      * Add File
      *
-     * @param string|string[] $file
+     * @param list<string>|string $file
      *
      * @return void
      */
@@ -28,4 +28,14 @@ interface AdapterInterface
      * @return string
      */
     public function minify(string $file);
+
+    /**
+     * Minify file with compression
+     *
+     * @param string $file  File name
+     * @param int    $level Level Compression (0-9)
+     *
+     * @return string
+     */
+    public function gzip(string $file, int $level);
 }
