@@ -29,7 +29,6 @@
         "codeigniter/coding-standard": "^1.8",
         "codeigniter/phpstan-codeigniter": "^1.5.3",
         "nexusphp/tachycardia": "^2.4",
-        "php-coveralls/php-coveralls": "^2.5",
         "phpstan/phpstan": "^2.1.10",
         "phpstan/phpstan-strict-rules": "^2.0.4",
         "phpunit/phpcov": "^9",
