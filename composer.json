@@ -76,6 +76,6 @@
         "cs": "vendor/bin/php-cs-fixer fix --ansi --verbose --dry-run --diff --using-cache=no",
         "rector": "vendor/bin/rector process --dry-run",
         "phpstan": "bash -c \"XDEBUG_MODE=off phpstan analyse\"",
-        "test": "phpunit"
+        "test": "vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml --coverage-php build/cov/coverage.cov --testsuite main"
     }
 }
