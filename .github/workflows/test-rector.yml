@@ -22,11 +22,11 @@ jobs:
   build:
     name: PHP ${{ matrix.php-versions }} Rector Analysis
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    if: (! contains(github.event.head_commit.message, '[ci skip]'))
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.1', '8.4']
 
     steps:
       - name: Checkout
