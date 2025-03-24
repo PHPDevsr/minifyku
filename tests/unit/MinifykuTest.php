@@ -27,7 +27,7 @@ final class MinifykuTest extends CIUnitTestCase
     private Minifyku $minifyku;
     private array $ver = [
         'js'  => '0561b3110b4682b4c0a67ea9741be28d',
-        'css' => '621c512df406dc8d923a3fa756087d9d',
+        'css' => '08bc0baf72ade3c5a02a75519a864ec2',
     ];
 
     protected function setUp(): void
@@ -240,8 +240,8 @@ final class MinifykuTest extends CIUnitTestCase
 
     public function testLoadCssWithDirMinCss(): void
     {
-        if (file_exists($this->config->dirMinJs . '/all.min.js')) {
-            unlink($this->config->dirMinJs . '/all.min.js');
+        if (file_exists($this->config->dirMinCss . '/all.min.css')) {
+            unlink($this->config->dirMinCss . '/all.min.css');
         }
 
         $this->config->dirMinCss = SUPPORTPATH . 'public/css';

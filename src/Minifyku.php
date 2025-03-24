@@ -237,12 +237,12 @@ class Minifyku
             $minDir = $dir;
         }
 
-        $class = $fileType === 'js' ? new MinifykuJSAdapter() : new MinifykuCSSAdapter();
-
         // Set empty result
         $results = [];
 
         foreach ($assets as $asset => $files) {
+            $class = $fileType === 'js' ? new MinifykuJSAdapter() : new MinifykuCSSAdapter();
+
             foreach ($files as $file) {
                 $class->add($dir . DIRECTORY_SEPARATOR . $file);
             }
