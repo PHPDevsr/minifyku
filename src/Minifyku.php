@@ -228,7 +228,7 @@ class Minifyku
     protected function deployFiles(string $fileType, array $assets, string $dir, ?string $minDir = null, int $levelGzip = 0): array
     {
         if (! in_array($fileType, ['js', 'css'], true)) {
-            throw MinifykuException::forWrongFileExtension($fileType);
+            throw MinifykuException::forWrongFileExtension($fileType); // @codeCoverageIgnore
         }
 
         $dir = rtrim($dir, '/');
