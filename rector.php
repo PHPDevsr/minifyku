@@ -27,6 +27,7 @@ use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
+use Rector\Renaming\Rector\ConstFetch\RenameConstantRector;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector;
@@ -94,6 +95,9 @@ return RectorConfig::configure()
         ClosureReturnTypeRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
         AddArrowFunctionReturnTypeRector::class,
+    ])
+    ->withConfiguredRule(RenameConstantRector::class, [
+        'FILTER_DEFAULT' => 'FILTER_UNSAFE_RAW',
     ])
     ->withConfiguredRule(StringClassNameToClassConstantRector::class, [
         // keep '\\' prefix string on string '\Foo\Bar'
