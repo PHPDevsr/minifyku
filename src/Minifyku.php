@@ -240,9 +240,10 @@ class Minifyku
         // Set empty result
         $results = [];
 
-        foreach ($assets as $asset => $files) {
-            $class = $fileType === 'js' ? new MinifykuJSAdapter() : new MinifykuCSSAdapter();
+        // Detect filetype for defining class
+        $class = $fileType === 'js' ? new MinifykuJSAdapter() : new MinifykuCSSAdapter();
 
+        foreach ($assets as $asset => $files) {
             foreach ($files as $file) {
                 $class->add($dir . DIRECTORY_SEPARATOR . $file);
             }
