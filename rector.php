@@ -28,7 +28,6 @@ use Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
-use Rector\Strict\Rector\If_\BooleanInIfConditionRuleFixerRector;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector;
@@ -40,7 +39,7 @@ use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 
 return RectorConfig::configure()
     ->withPhpSets(php83: true)
-    ->withPreparedSets(deadCode: true, codeQuality: true, codingStyle: true, instanceOf: true, strictBooleans: true, phpunitCodeQuality: true, typeDeclarations: true, earlyReturn: true)
+    ->withPreparedSets(deadCode: true, codeQuality: true, codingStyle: true, instanceOf: true, phpunitCodeQuality: true, typeDeclarations: true, earlyReturn: true)
     ->withAutoloadPaths([
         __DIR__ . '/vendor/autoload.php',
     ])
@@ -88,7 +87,6 @@ return RectorConfig::configure()
         EmptyOnNullableObjectToInstanceOfRector::class,
         DisallowedEmptyRuleFixerRector::class,
         PrivatizeFinalClassPropertyRector::class,
-        BooleanInIfConditionRuleFixerRector::class,
         AddClosureVoidReturnTypeWhereNoReturnRector::class,
         AddFunctionVoidReturnTypeWhereNoReturnRector::class,
         AddMethodCallBasedStrictParamTypeRector::class,
