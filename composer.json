@@ -27,7 +27,7 @@
     "require-dev": {
         "codeigniter4/framework": "^4.6",
         "codeigniter/coding-standard": "^1.8",
-        "codeigniter/phpstan-codeigniter": "^1.5.3",
+        "codeigniter/phpstan-codeigniter": "^1.5.3 || ^2.0.0",
         "nexusphp/tachycardia": "^2.4",
         "phpstan/phpstan": "^2.1.10",
         "phpstan/phpstan-strict-rules": "^2.0.4",
