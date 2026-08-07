@@ -33,7 +33,7 @@
         "phpstan/phpstan-strict-rules": "^2.0.4",
         "phpunit/phpcov": "^9",
         "phpunit/phpunit": "^10.4",
-        "rector/rector": "2.5.2"
+        "rector/rector": "2.6.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
